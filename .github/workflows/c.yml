@@ -1,4 +1,4 @@
-name: Ultrakill Folder Release
+name: Raft Folder Release
 
 on:
   workflow_dispatch:   # run manually from the Actions tab
