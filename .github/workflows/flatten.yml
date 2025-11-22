@@ -1,4 +1,4 @@
-name: Flatten Unity WebGL Build
+name: Flatten Unity WebGL Build into repo/
 
 on:
   workflow_dispatch:
@@ -11,22 +11,21 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Move Build and TemplateData files to root
+      - name: Move Build and TemplateData files into repo/
         run: |
-          mv Build/* . || true
-          mv TemplateData/* . || true
-          rm -rf Build TemplateData
+          mv repo/Build/* repo/ || true
+          mv repo/TemplateData/* repo/ || true
+          rm -rf repo/Build repo/TemplateData
 
-      - name: Update index.html paths
+      - name: Update index.html paths inside repo/
         run: |
-          sed -i 's|Build/||g' index.html
-          sed -i 's|TemplateData/||g' index.html
+          sed -i 's|Build/||g' repo/index.html
+          sed -i 's|TemplateData/||g' repo/index.html
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add .
-          git commit -m "Flattened Unity build to repo root and updated index.html paths"
+          git add repo/
+          git commit -m "Flattened Unity build into repo/ and updated index.html paths"
           git push
-
