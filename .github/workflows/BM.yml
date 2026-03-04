@@ -1,0 +1,29 @@
+name: Blood Money Folder Release
+
+on:
+  workflow_dispatch:   # run manually from the Actions tab
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout only bloodmoney folder
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          sparse-checkout: bloodmoney
+          sparse-checkout-cone-mode: true
+
+      - name: Zip bloodmoney folder
+        run: zip -r bloodmoney.zip bloodmoney
+
+      - name: Create release with bloodmoney.zip
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: bloodmoney-v1.0
+          name: Blood Money Folder Release
+          body: |
+            This release contains only the `bloodmoney` folder from the repo.
+          files: bloodmoney.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
